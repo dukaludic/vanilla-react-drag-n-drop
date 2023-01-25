@@ -1,0 +1,55 @@
+.task-container {
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 0 5px 10px 5px;
+    position: relative;
+    box-shadow: 0px 0px 5px #a3a3a3;
+}
+
+.important-marker {
+    background-color: #F31A4A;
+    height: 100%;
+    width: 5px;
+    position: absolute;
+    border-radius: 5px 0 0 5px;
+}
+
+.task-content-container {
+    padding: 20px;
+}
+
+.task-content-container h3 {
+    font-weight: bold;
+}
+
+.label {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.labels-container {
+    display: flex;
+    align-items: center;
+}
+
+.comments,
+.subtasks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comments img {
+    height: 10px;
+}
+
+.task-properties {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.task-properties div {
+    margin-right: 5px;
+}

@@ -1,0 +1,92 @@
+.task-list {
+    max-height: 500px;
+    margin: 10px;
+}
+
+.dots-container {
+    /* width: 60px;
+    height: 40px; */
+    /* background-color: none; */
+    /* border-radius: 5px; */
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.dots-dropdown {
+    font-size: .8em;
+    position: absolute;
+    background-color: #fff;
+    width: 120px;
+    height: 40px;
+    top: 20px;
+    right: 10px;
+    z-index: 2;
+    padding: 10px;
+    border-radius: 4px;
+    /* border: 1px solid red; */
+    box-shadow: 0px 0px 5px #a3a3a3;
+    cursor: pointer;
+}
+
+.dots-dropdown ul {
+    list-style-type: none;
+}
+
+.dots-dropdown ul li:hover {
+    background-color: #d3d3d3;
+}
+
+.task-list-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 20px;
+}
+
+.task-list-header-container p {
+    font-weight: bold;
+    color: #808080;
+}
+
+.task-list-header-container div h1 {
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+.task-list {
+    overflow-y: scroll;
+}
+
+body ::-webkit-scrollbar {
+    width: 7px;
+    background-color: none;
+}
+
+body ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #808080;
+}
+
+.add-task {
+    margin: 15px;
+    cursor: pointer;
+    display: flex;
+}
+
+.add-task button {
+    background-color: rgb(186, 91, 230);
+    width: 45px;
+    border-radius: 0 5px 5px 0;
+    border: none;
+    cursor: pointer;
+}
+
+.add-task p {
+    color: rgb(121, 38, 160);
+    font-weight: bold;
+}
