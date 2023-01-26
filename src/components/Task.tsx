@@ -39,6 +39,7 @@ function Task({ task }: Props) {
 
                 return (
                   <div
+                    key={id}
                     className="label"
                     style={{ backgroundColor: label?.color }}
                   ></div>

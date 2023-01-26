@@ -1,9 +1,7 @@
 import { createContext, ReactNode, useReducer } from "react";
-import { data } from "../data.js";
+import data from "../data.json";
 
-import { TaskList, Task, Label, User, Data } from "../types";
-
-console.log(data);
+import { TaskList, Data } from "../types";
 
 const initialState: { data: Data; dispatch?: any } = {
   data: data,
@@ -15,14 +13,16 @@ const { Provider } = globalState;
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(
-    (state: any, action: { type: string; payload: any }) => {
+    (state: { data: Data }, action: { type: string; payload: any }) => {
       const currentState = { ...state };
       switch (action.type) {
         case "COMPLETE":
           const taskListToComplete = currentState.data.task_lists.find(
             (tl: TaskList) => tl.id === action.payload.listId
           );
-          taskListToComplete.is_completed = true;
+          if (taskListToComplete) {
+            taskListToComplete.is_completed = true;
+          }
 
           for (const task of currentState.data.tasks) {
             if (task.task_list_id === action.payload.listId) {
@@ -35,7 +35,10 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
           const taskListToDelete = currentState.data.task_lists.find(
             (tl: TaskList) => tl.id === action.payload.listId
           );
-          taskListToDelete.is_trashed = true;
+
+          if (taskListToDelete) {
+            taskListToDelete.is_trashed = true;
+          }
 
           return currentState;
 
@@ -55,18 +58,23 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
 
         case "ADD_TASK":
           const taskList = currentState.data.task_lists.find(
-            (tl: any) => tl.id === action.payload.listId
+            (tl: TaskList) => tl.id === action.payload.listId
           );
+
+          if (!taskList) {
+            return currentState;
+          }
+
           const task = {
             id: currentState.data.tasks.length + 1,
             name: action.payload.input,
             is_completed: false,
             task_list_id: action.payload.listId,
-            position: taskList.open_tasks.length + 1,
+            position: taskList.open_tasks + 1,
             start_on: null,
             due_on: null,
             labels: [],
-            open_subtasks: taskList.open_tasks.length + 1,
+            open_subtasks: taskList.open_tasks + 1,
             comments_count: 0,
             assignee: [],
             is_important: false,

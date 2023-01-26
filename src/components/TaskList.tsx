@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { createRef, useContext, useEffect, useRef, useState } from "react";
 import { dots } from "../assets";
 import { Task as TaskType } from "../types";
 import Task from "./Task";
@@ -18,8 +18,21 @@ const TaskList = ({ id, name, listIndex, tasks }: Props) => {
   const [addTask, setAddTask] = useState(false);
   const [addTaskInput, setAddTaskInput] = useState("");
   const context = useContext(globalState);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // console.log(context, "CO");
+  useEffect(() => {
+    function handleClickOutside(e: any) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownShown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   tasks.sort((a, b) => a.position - b.position);
 
@@ -52,25 +65,28 @@ const TaskList = ({ id, name, listIndex, tasks }: Props) => {
           <p>{`(${tasks.length})`}</p>
         </div>
         <div>
-          <div
-            onClick={() => setDropdownShown(!dropdownShown)}
-            className="dots-container"
-          >
-            <img src={dots} />
-            {dropdownShown && (
-              <div className="dots-dropdown">
-                <ul>
-                  <li onClick={completeTasks}>Complete</li>
-                  <li onClick={moveToTrash}>Move to trash</li>
-                </ul>
-              </div>
-            )}
-          </div>
+          {name !== "Completed Tasks" && (
+            <div
+              ref={dropdownRef}
+              onClick={() => setDropdownShown(!dropdownShown)}
+              className="dots-container"
+            >
+              <img src={dots} />
+              {dropdownShown && (
+                <div className="dots-dropdown">
+                  <ul>
+                    <li onClick={completeTasks}>Complete</li>
+                    <li onClick={moveToTrash}>Move to trash</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className="task-list">
         {tasks.map((task) => {
-          return <Task task={task} />;
+          return <Task key={task.id} task={task} />;
         })}
       </div>
       <div className="add-task">

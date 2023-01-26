@@ -25,6 +25,8 @@ svg {
 .App {
   display: flex;
   justify-content: space-between;
+  height: 700px;
+  padding: 50px;
 }
 
 .plus-btn-container {
@@ -69,10 +71,6 @@ svg {
   transform: translate(-50%, -50%);
 }
 
-.App {
-  height: 500px;
-}
-
 .d-flex {
   display: flex;
 }
@@ -104,4 +102,11 @@ svg {
 
 .add-list-dropdown {
   width: 200px;
+}
+
+.hr {
+  margin: 20px;
+  border-radius: 10px;
+  height: 10px;
+  background-color: #474747;
 }

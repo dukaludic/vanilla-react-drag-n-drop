@@ -29,40 +29,44 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {taskLists.map((item: TaskListType, index: number) => {
-        return (
-          <TaskList
-            id={item.id}
-            name={item.name}
-            listIndex={index}
-            tasks={tasks.filter(
-              (task) =>
-                task.task_list_id === item.id && task.is_completed === false
-            )}
-          />
-        );
-      })}
-      <div className="plus-btn-container">
-        {!isOpen ? (
-          <div onClick={() => setIsOpen(!isOpen)} className="plus-btn">
-            <div className="vertical-line"></div>
-            <div className="horizontal-line"></div>
-          </div>
-        ) : (
-          <div className="add-list-dropdown">
-            <input
-              value={newTaskListInput}
-              onChange={(e) => setNewTaskListInput(e.target.value)}
-              type="text"
+    <>
+      <div className="App">
+        {taskLists.map((item: TaskListType, index: number) => {
+          return (
+            <TaskList
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              listIndex={index}
+              tasks={tasks.filter(
+                (task) =>
+                  task.task_list_id === item.id && task.is_completed === false
+              )}
             />
-            <button onClick={newTaskListHandler}>Add</button>
-            <button onClick={() => setIsOpen(false)}>Cancel</button>
-          </div>
-        )}
+          );
+        })}
+        <div className="plus-btn-container">
+          {!isOpen ? (
+            <div onClick={() => setIsOpen(!isOpen)} className="plus-btn">
+              <div className="vertical-line"></div>
+              <div className="horizontal-line"></div>
+            </div>
+          ) : (
+            <div className="add-list-dropdown">
+              <input
+                value={newTaskListInput}
+                onChange={(e) => setNewTaskListInput(e.target.value)}
+                type="text"
+              />
+              <button onClick={newTaskListHandler}>Add</button>
+              <button onClick={() => setIsOpen(false)}>Cancel</button>
+            </div>
+          )}
+        </div>
+        <TaskList name={"Completed Tasks"} tasks={completedTasks} />
       </div>
-      <TaskList name={"Completed Tasks"} tasks={completedTasks} />
-    </div>
+      <div className="hr"></div>
+    </>
   );
 }
 
