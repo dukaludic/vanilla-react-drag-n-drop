@@ -1,4 +1,12 @@
-import { createRef, useContext, useEffect, useRef, useState } from "react";
+import {
+  createRef,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { dots } from "../assets";
 import { Task as TaskType } from "../types";
 import Task from "./Task";
@@ -9,11 +17,19 @@ import { globalState } from "../context/GlobalState";
 type Props = {
   id?: number;
   name: string;
-  listIndex?: number;
   tasks: TaskType[];
+  setTaskDragged: Dispatch<SetStateAction<number | null>>;
+  setDraggingOverTask: Dispatch<SetStateAction<number | null>>;
+  setDraggingFrom: Dispatch<SetStateAction<number | null>>;
 };
 
-const TaskList = ({ id, name, listIndex, tasks }: Props) => {
+const TaskList = ({
+  id,
+  name,
+  tasks,
+  setTaskDragged,
+  setDraggingOverTask,
+}: Props) => {
   const [dropdownShown, setDropdownShown] = useState(false);
   const [addTask, setAddTask] = useState(false);
   const [addTaskInput, setAddTaskInput] = useState("");
@@ -37,23 +53,17 @@ const TaskList = ({ id, name, listIndex, tasks }: Props) => {
   tasks.sort((a, b) => a.position - b.position);
 
   const completeTasks = () => {
-    console.log("COMPLETE");
-    console.log(context, "Context");
-    context.dispatch({ type: "COMPLETE", payload: { listId: id } });
+    context.dispatch("COMPLETE", { listId: id });
   };
   const moveToTrash = () => {
-    console.log(id, "id");
-    context.dispatch({ type: "MOVE_TO_TRASH", payload: { listId: id } });
+    context.dispatch("MOVE_TO_TRASH", { listId: id });
   };
 
   const handleAddTask = () => {
     if (!addTaskInput) {
       return;
     }
-    context.dispatch({
-      type: "ADD_TASK",
-      payload: { input: addTaskInput, listId: id },
-    });
+    context.dispatch("ADD_TASK", { input: addTaskInput, listId: id });
     setAddTask(false);
   };
 
@@ -85,8 +95,16 @@ const TaskList = ({ id, name, listIndex, tasks }: Props) => {
         </div>
       </div>
       <div className="task-list">
-        {tasks.map((task) => {
-          return <Task key={task.id} task={task} />;
+        {tasks.map((task, index) => {
+          return (
+            <div
+              draggable
+              onDragStart={(e: any) => setTaskDragged(task.id)}
+              onDragOver={(e: any) => setDraggingOverTask(task.position)}
+            >
+              <Task key={task.id} task={task} />
+            </div>
+          );
         })}
       </div>
       <div className="add-task">

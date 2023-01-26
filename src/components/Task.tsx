@@ -48,6 +48,7 @@ function Task({ task }: Props) {
               {remainingIds.length > 0 && <p>{`+${remainingIds.length}`}</p>}
             </div>
           )}
+          <div>{`POSITION: ${task.position}`}</div>
           {task.open_subtasks > 0 && (
             <div className="subtasks">
               <img src={subtasks} />

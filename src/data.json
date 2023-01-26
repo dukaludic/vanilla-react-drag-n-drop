@@ -86,7 +86,9 @@
       "labels": [],
       "open_subtasks": 2,
       "comments_count": 7,
-      "assignee": [1],
+      "assignee": [
+        1
+      ],
       "is_important": false
     },
     {
@@ -97,10 +99,21 @@
       "position": 4,
       "start_on": "2023-05-08T00:00:00.000Z",
       "due_on": "2023-09-10T00:00:00.000Z",
-      "labels": [1, 2, 3, 4, 5, 6, 7, 8],
+      "labels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
       "open_subtasks": 2,
       "comments_count": 7,
-      "assignee": [1],
+      "assignee": [
+        1
+      ],
       "is_important": false
     },
     {
@@ -111,10 +124,21 @@
       "position": 5,
       "start_on": "2023-05-08T00:00:00.000Z",
       "due_on": "2023-09-10T00:00:00.000Z",
-      "labels": [1, 2, 3, 4, 5, 6, 7, 8],
+      "labels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
       "open_subtasks": 2,
       "comments_count": 7,
-      "assignee": [1],
+      "assignee": [
+        1
+      ],
       "is_important": false
     },
     {
@@ -125,7 +149,11 @@
       "position": 6,
       "start_on": null,
       "due_on": null,
-      "labels": [1, 2, 3],
+      "labels": [
+        1,
+        2,
+        3
+      ],
       "open_subtasks": 2,
       "comments_count": 7,
       "assignee": [],
@@ -142,7 +170,9 @@
       "labels": [],
       "open_subtasks": 1,
       "comments_count": 0,
-      "assignee": [3],
+      "assignee": [
+        3
+      ],
       "is_important": false
     },
     {
@@ -153,10 +183,17 @@
       "position": 1,
       "start_on": "2019-05-08T00:00:00.000Z",
       "due_on": "2019-09-10T00:00:00.000Z",
-      "labels": [1, 2],
+      "labels": [
+        1,
+        2
+      ],
       "open_subtasks": 2,
       "comments_count": 0,
-      "assignee": [3, 2, 1],
+      "assignee": [
+        3,
+        2,
+        1
+      ],
       "is_important": false
     },
     {
@@ -167,10 +204,15 @@
       "position": 2,
       "start_on": null,
       "due_on": null,
-      "labels": [4, 3],
+      "labels": [
+        4,
+        3
+      ],
       "open_subtasks": 2,
       "comments_count": 0,
-      "assignee": [4],
+      "assignee": [
+        4
+      ],
       "is_important": false
     },
     {
@@ -184,7 +226,9 @@
       "labels": [],
       "open_subtasks": 0,
       "comments_count": 0,
-      "assignee": [1],
+      "assignee": [
+        1
+      ],
       "is_important": false
     },
     {
@@ -195,7 +239,9 @@
       "position": 1,
       "start_on": "2019-05-08T00:00:00.000Z",
       "due_on": "2019-09-10T00:00:00.000Z",
-      "labels": [1],
+      "labels": [
+        1
+      ],
       "open_subtasks": 0,
       "comments_count": 0,
       "assignee": [],
@@ -251,10 +297,21 @@
       "position": 1,
       "start_on": "2023-05-08T00:00:00.000Z",
       "due_on": "2023-09-10T00:00:00.000Z",
-      "labels": [1, 2, 3, 4, 5, 6, 7 , 8],
+      "labels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
       "open_subtasks": 2,
       "comments_count": 7,
-      "assignee": [1],
+      "assignee": [
+        1
+      ],
       "is_important": false
     },
     {
@@ -273,14 +330,38 @@
     }
   ],
   "labels": [
-    {"id": 1, "color": "#743C97"},
-    {"id": 2, "color": "#F44336"},
-    {"id": 3, "color": "#03A9F4"},
-    {"id": 4, "color": "#4CAF50"},
-    {"id": 5, "color": "#FFC107"},
-    {"id": 6, "color": "#9C27B0"},
-    {"id": 7, "color": "#3F51B5"},
-    {"id": 8, "color": "#9E9E9E"}
+    {
+      "id": 1,
+      "color": "#743C97"
+    },
+    {
+      "id": 2,
+      "color": "#F44336"
+    },
+    {
+      "id": 3,
+      "color": "#03A9F4"
+    },
+    {
+      "id": 4,
+      "color": "#4CAF50"
+    },
+    {
+      "id": 5,
+      "color": "#FFC107"
+    },
+    {
+      "id": 6,
+      "color": "#9C27B0"
+    },
+    {
+      "id": 7,
+      "color": "#3F51B5"
+    },
+    {
+      "id": 8,
+      "color": "#9E9E9E"
+    }
   ],
   "users": [
     {
