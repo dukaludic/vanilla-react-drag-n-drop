@@ -24,7 +24,7 @@ svg {
 
 .app {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 700px;
   padding: 50px;
 }

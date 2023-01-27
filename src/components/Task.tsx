@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import "./task.css";
-import moment from "moment";
-import { Label, Task as TaskType } from "../types";
-import { globalState } from "../context/GlobalState";
-import { comments, subtasks } from "../assets";
+import React, { useContext } from 'react';
+import './task.css';
+import moment from 'moment';
+import { Task as TaskType } from '../types';
+import { globalState } from '../context/GlobalState';
+import { comments, subtasks } from '../assets';
 
 type Props = {
   task: TaskType;
@@ -15,16 +15,11 @@ function Task({ task }: Props) {
   const availableLabels = context.data.labels;
   const remainingIds = task.labels.splice(5);
 
-  const format =
-    task.due_on?.split("-")[0] === moment().year().toString()
-      ? "MMM DD"
-      : "MMM DD, YYYY";
+  const format = task.due_on?.split('-')[0] === moment().year().toString() ? 'MMM DD' : 'MMM DD, YYYY';
 
-  const start = task.start_on
-    ? moment(task.start_on).format(format)
-    : undefined;
+  const start = task.start_on ? moment(task.start_on).format(format) : undefined;
   const due = task.due_on ? moment(task.due_on).format(format) : undefined;
-  const dates = `${start ? start + "-" : ""} ${due ? due : ""}`;
+  const dates = `${start ? start + '-' : ''} ${due ? due : ''}`;
 
   return (
     <div className="task-container">
@@ -37,18 +32,11 @@ function Task({ task }: Props) {
               {task.labels.map((id) => {
                 const label = availableLabels.find((l) => l.id === id);
 
-                return (
-                  <div
-                    key={id}
-                    className="label"
-                    style={{ backgroundColor: label?.color }}
-                  ></div>
-                );
+                return <div key={id} className="label" style={{ backgroundColor: label?.color }}></div>;
               })}
               {remainingIds.length > 0 && <p>{`+${remainingIds.length}`}</p>}
             </div>
           )}
-          <div>{`POSITION: ${task.position}`}</div>
           {task.open_subtasks > 0 && (
             <div className="subtasks">
               <img src={subtasks} />

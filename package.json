@@ -44,5 +44,9 @@
   },
   "devDependencies": {
     "http-server": "^14.1.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

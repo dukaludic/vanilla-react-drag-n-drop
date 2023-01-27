@@ -49,4 +49,12 @@ export type DragPayload = {
   toPosition: number;
 };
 
+export type CompletePayload = { listId: number }
+
+export type TrashPayload = { listId: number }
+
 export type Payload = Record<string, any>;
+
+export type AddTaskPayload = { input: string, listId: number }
+
+export type AddListPayload = { name: string }

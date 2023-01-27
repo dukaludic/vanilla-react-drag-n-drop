@@ -38,6 +38,10 @@
     background-color: #d3d3d3;
 }
 
+.task-list-container {
+    width: 350px;
+}
+
 .task-list-header-container {
     display: flex;
     align-items: center;
@@ -62,12 +66,23 @@
     overflow-y: scroll;
 }
 
-body ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 7px;
     background-color: none;
 }
 
-body ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #808080;
+}
+
+
+.scrollbar {
+    width: 7px;
+    background-color: none;
+}
+
+.scrollbar-thumb {
     border-radius: 10px;
     background-color: #808080;
 }
