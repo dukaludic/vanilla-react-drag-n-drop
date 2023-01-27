@@ -1,7 +1,9 @@
 import { createContext, ReactNode, useReducer } from "react";
-import data from "../data.json";
+import originalData from "../data.json";
 
-import { TaskList, Data, Task } from "../types";
+import { TaskList, Data, Task, DragPayload, Payload } from "../types";
+
+const data = { ...originalData };
 
 const initialState: {
   data: Data;
@@ -10,8 +12,6 @@ const initialState: {
   data: data,
   dispatch: () => {},
 };
-
-type Payload = Record<string, any>;
 
 export const globalState = createContext(initialState);
 
@@ -24,6 +24,8 @@ const reducer = (
   const currentState = { ...state };
   switch (action.type) {
     case "COMPLETE":
+      const handleComplete = (state: Data, payload: Payload) => {};
+
       const taskListToComplete = currentState.data.task_lists.find(
         (tl: TaskList) => tl.id === action.payload.listId
       );
@@ -81,104 +83,46 @@ const reducer = (
         start_on: null,
         due_on: null,
         labels: [],
-        open_subtasks: taskList.open_tasks + 1,
+        open_subtasks: 0,
         comments_count: 0,
         assignee: [],
         is_important: false,
       };
 
       currentState.data.tasks.push(task);
+
+      taskList.open_tasks++;
       return currentState;
     case "ON_DRAG":
-      console.log("drag position:", action.payload.dragEndPosition);
       const tasks = currentState.data.tasks;
-      const taskDragged = tasks.find((t) => t.id === action.payload.taskId);
+      const payload: DragPayload = action.payload as DragPayload;
 
-      // if (taskDragged?.position === action.payload.dragEndPosition) {
-      //   console.log("same place");
-      //   return currentState;
-      // }
+      const { taskId, fromList, fromPosition, toList, toPosition } = payload;
 
-      if (!taskDragged) {
-        return currentState;
+      const taskDragged = tasks.find((t) => t.id === taskId);
+
+      if (!taskDragged) return currentState;
+
+      if (fromList === toList) {
+        const tasksCopy = filterAndSort(fromList, tasks);
+
+        [tasksCopy[fromPosition - 1], tasksCopy[toPosition - 1]] = [
+          tasksCopy[toPosition - 1],
+          tasksCopy[fromPosition - 1],
+        ];
+
+        positionAndSave(tasksCopy, tasks, payload, taskDragged);
+      } else {
+        const toListTasksCopy = filterAndSort(toList, tasks);
+
+        toListTasksCopy.splice(toPosition - 1, 0, taskDragged);
+
+        positionAndSave(toListTasksCopy, tasks, payload, taskDragged);
+
+        const fromListsTasksCopy = filterAndSort(fromList, tasks);
+
+        positionAndSave(fromListsTasksCopy, tasks, payload, taskDragged);
       }
-
-      const tasksInList = tasks.filter(
-        (t: Task) => t.task_list_id === action.payload.listId
-      );
-
-      const taskAtDragEndPosition = tasksInList.find(
-        (t) => t.position === action.payload.dragEndPosition
-      );
-
-      if (!taskAtDragEndPosition) {
-        return currentState;
-      }
-
-      // console.log(action.payload.dragEndPosition, "dragEndPosition");
-      // console.log(
-      //   `atDragEnd: ${taskAtDragEndPosition.position} next:${nextTaskToBubble?.position}`
-      // );
-      // console.log("nextTaskToBubble", nextTaskToBubble?.name);
-
-      //reduce positions of list that is dragged from
-
-      // draggingFromList,
-      // draggingFromPosition,
-
-      const tasksToReducePositions = tasks.filter(
-        (t) => t.task_list_id === action.payload.draggingFromList
-      );
-
-      console.log("tasksToReducePositions", tasksToReducePositions);
-
-      // const list = currentState.data.task_lists.find(
-      //   (l) => l.id === action.payload.draggingFromList
-      // );
-
-      const taskMoved = tasksToReducePositions.find(
-        (t) => t.position === action.payload.draggingFromPosition
-      );
-
-      console.log(taskMoved, "taskMoved");
-
-      const reducePositions = (taskMoved: Task) => {
-        console.log(taskMoved, "taskMoved");
-        const nextTaskToBubble = tasksToReducePositions.find(
-          (t) => t.position === taskMoved.position + 1
-        );
-        if (nextTaskToBubble) {
-          nextTaskToBubble.position = taskMoved.position - 1;
-          console.log("has more");
-
-          bubbleTask(nextTaskToBubble);
-        } else {
-          // nextTaskToBubble.position = taskMoved.position - 1;
-          return;
-        }
-      };
-
-      // if (taskMoved) reducePositions(taskMoved);
-
-      const bubbleTask = (taskToMove: Task): void => {
-        const nextTaskToBubble = tasks.find(
-          (t) => t.position === taskToMove.position + 1
-        );
-        if (nextTaskToBubble) {
-          taskToMove.position = taskToMove.position + 1;
-          console.log("has more");
-
-          bubbleTask(nextTaskToBubble);
-        } else {
-          taskToMove.position = taskToMove.position + 1;
-          return;
-        }
-      };
-
-      bubbleTask(taskAtDragEndPosition);
-
-      taskDragged.task_list_id = action.payload.listId;
-      taskDragged.position = action.payload.dragEndPosition;
 
       return currentState;
 
@@ -200,4 +144,34 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </Provider>
   );
+};
+
+const filterAndSort = (taskListId: number, originalTasks: Task[]): Task[] => {
+  const tasksCopy = originalTasks.filter(
+    (t) => t.task_list_id === taskListId && !t.is_completed
+  );
+
+  return tasksCopy.sort((a, b) => a.position - b.position);
+};
+
+const positionAndSave = (
+  tasksCopy: Task[],
+  tasks: Task[],
+  payload: DragPayload,
+  taskDragged: Task
+) => {
+  const { toPosition, toList } = payload;
+
+  if (taskDragged) {
+    tasksCopy.forEach((t, index) => {
+      if (t.id === taskDragged.id) {
+        taskDragged.position = toPosition;
+        taskDragged.task_list_id = toList;
+      } else {
+        t.position = index + 1;
+        let original = tasks.find((o) => o.id === t.id);
+        original = t;
+      }
+    });
+  }
 };

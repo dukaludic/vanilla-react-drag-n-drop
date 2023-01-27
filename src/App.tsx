@@ -4,27 +4,21 @@ import { globalState } from "./context/GlobalState";
 
 import TaskList from "./components/TaskList";
 
-import { Task, TaskList as TaskListType } from "./types";
+import { DragPayload, Task, TaskList as TaskListType } from "./types";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [newTaskListInput, setNewTaskListInput] = useState("");
   const [taskDragged, setTaskDragged] = useState<number | null>(null);
-  const [dragginOverTask, setDraggingOverTask] = useState<number | null>(null);
-  const [draggingOverList, setDraggingOverList] = useState<number | null>(null);
-  const [dragginFromList, setDragginFromList] = useState<number | null>(null);
-  const [draggingFromPosition, setDraggingFromPosition] = useState<
-    number | null
-  >(null);
+  const [toPosition, setToPosition] = useState<number | null>(null);
+  const [toList, setToList] = useState<number | null>(null);
+  const [fromList, setFromList] = useState<number | null>(null);
+  const [fromPosition, setFromPosition] = useState<number | null>(null);
   const context = useContext(globalState);
 
   const taskLists = context.data.task_lists.filter(
     (tl) => tl.is_trashed === false && tl.is_completed === false
   );
-
-  useEffect(() => {
-    console.log(taskDragged, "taskDragged");
-  }, [taskDragged]);
 
   const tasks: Task[] = context.data.tasks;
   const completedTasks: Task[] = context.data.tasks.filter(
@@ -37,39 +31,41 @@ function App() {
   };
 
   const handleDragEnd = (
-    listId: number,
-    dragEndPosition: number | null,
-    draggingFromList: number,
-    draggingFromPosition: number | null
+    toList: number | null,
+    toPosition: number | null,
+    fromList: number | null,
+    fromPosition: number | null
   ) => {
-    console.log(
-      `dragging ${taskDragged} into list ${draggingOverList}, position: ${dragEndPosition}`
-    );
+    console.log("TO LIST", toList);
 
-    context.dispatch("ON_DRAG", {
-      listId: draggingOverList,
+    if (!taskDragged || !fromList || !fromPosition || !toList || !toPosition) {
+      return;
+    }
+
+    const payload: DragPayload = {
       taskId: taskDragged,
-      dragEndPosition,
-      draggingFromList,
-      draggingFromPosition,
-    });
+      fromList,
+      fromPosition,
+      toList,
+      toPosition,
+    };
+
+    context.dispatch("ON_DRAG", payload);
   };
 
   return (
     <>
-      <div className="App">
+      <div className="app">
         {taskLists.map((item: TaskListType, index: number) => {
           return (
             <div
               key={item.id}
-              onDragOver={(e: any) => setDraggingOverList(item.id)}
-              onDragEnd={(e: any) =>
-                handleDragEnd(
-                  item.id,
-                  dragginOverTask,
-                  dragginFromList!,
-                  draggingFromPosition
-                )
+              onDragOver={(e: React.DragEvent) => {
+                setToList(item.id);
+                console.log(`${taskDragged} is dragging over ${item.id}`);
+              }}
+              onDragEnd={(e: React.DragEvent) =>
+                handleDragEnd(toList, toPosition, fromList!, fromPosition)
               }
             >
               <TaskList
@@ -81,9 +77,9 @@ function App() {
                     task.task_list_id === item.id && task.is_completed === false
                 )}
                 setTaskDragged={setTaskDragged}
-                setDraggingOverTask={setDraggingOverTask}
-                setDraggingFromList={setDragginFromList}
-                setDraggingFromPosition={setDraggingFromPosition}
+                setToPosition={setToPosition}
+                setFromList={setFromList}
+                setFromPosition={setFromPosition}
               />
             </div>
           );
@@ -107,10 +103,10 @@ function App() {
           )}
         </div>
         <TaskList
-          setDraggingFromPosition={setDraggingFromPosition}
-          setDraggingOverTask={setDraggingOverTask}
+          setFromPosition={setFromPosition}
+          setToPosition={setToPosition}
           setTaskDragged={setTaskDragged}
-          setDraggingFromList={setDragginFromList}
+          setFromList={setFromList}
           name={"Completed Tasks"}
           tasks={completedTasks}
         />

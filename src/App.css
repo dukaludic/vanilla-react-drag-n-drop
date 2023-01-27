@@ -22,7 +22,7 @@ svg {
   max-width: 100%;
 }
 
-.App {
+.app {
   display: flex;
   justify-content: space-between;
   height: 700px;

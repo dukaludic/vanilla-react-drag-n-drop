@@ -40,3 +40,13 @@ export interface User {
   name: string;
   avatar_url: string;
 }
+
+export type DragPayload = {
+  taskId: number;
+  fromList: number;
+  fromPosition: number;
+  toList: number;
+  toPosition: number;
+};
+
+export type Payload = Record<string, any>;

@@ -19,9 +19,9 @@ type Props = {
   name: string;
   tasks: TaskType[];
   setTaskDragged: Dispatch<SetStateAction<number | null>>;
-  setDraggingOverTask: Dispatch<SetStateAction<number | null>>;
-  setDraggingFromList: Dispatch<SetStateAction<number | null>>;
-  setDraggingFromPosition: Dispatch<SetStateAction<number | null>>;
+  setToPosition: Dispatch<SetStateAction<number | null>>;
+  setFromList: Dispatch<SetStateAction<number | null>>;
+  setFromPosition: Dispatch<SetStateAction<number | null>>;
 };
 
 const TaskList = ({
@@ -29,9 +29,9 @@ const TaskList = ({
   name,
   tasks,
   setTaskDragged,
-  setDraggingOverTask,
-  setDraggingFromList,
-  setDraggingFromPosition,
+  setToPosition,
+  setFromList,
+  setFromPosition,
 }: Props) => {
   const [dropdownShown, setDropdownShown] = useState(false);
   const [addTask, setAddTask] = useState(false);
@@ -40,16 +40,23 @@ const TaskList = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(e: any) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    const handleClickOutsideWrapper = (e: MouseEvent) => {
+      handleClickOutside(e);
+    };
+
+    function handleClickOutside(e: MouseEvent): void {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setDropdownShown(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutsideWrapper);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutsideWrapper);
     };
   }, [dropdownRef]);
 
@@ -102,12 +109,12 @@ const TaskList = ({
           return (
             <div
               draggable
-              onDragStart={(e: any) => {
+              onDragStart={(e: React.DragEvent) => {
                 setTaskDragged(task.id);
-                setDraggingFromList(task.task_list_id);
-                setDraggingFromPosition(task.position);
+                setFromList(task.task_list_id);
+                setFromPosition(task.position);
               }}
-              onDragOver={(e: any) => setDraggingOverTask(task.position)}
+              onDragOver={(e: React.DragEvent) => setToPosition(task.position)}
             >
               <Task key={task.id} task={task} />
             </div>
