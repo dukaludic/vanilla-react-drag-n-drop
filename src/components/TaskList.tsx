@@ -20,7 +20,8 @@ type Props = {
   tasks: TaskType[];
   setTaskDragged: Dispatch<SetStateAction<number | null>>;
   setDraggingOverTask: Dispatch<SetStateAction<number | null>>;
-  setDraggingFrom: Dispatch<SetStateAction<number | null>>;
+  setDraggingFromList: Dispatch<SetStateAction<number | null>>;
+  setDraggingFromPosition: Dispatch<SetStateAction<number | null>>;
 };
 
 const TaskList = ({
@@ -29,6 +30,8 @@ const TaskList = ({
   tasks,
   setTaskDragged,
   setDraggingOverTask,
+  setDraggingFromList,
+  setDraggingFromPosition,
 }: Props) => {
   const [dropdownShown, setDropdownShown] = useState(false);
   const [addTask, setAddTask] = useState(false);
@@ -99,7 +102,11 @@ const TaskList = ({
           return (
             <div
               draggable
-              onDragStart={(e: any) => setTaskDragged(task.id)}
+              onDragStart={(e: any) => {
+                setTaskDragged(task.id);
+                setDraggingFromList(task.task_list_id);
+                setDraggingFromPosition(task.position);
+              }}
               onDragOver={(e: any) => setDraggingOverTask(task.position)}
             >
               <Task key={task.id} task={task} />

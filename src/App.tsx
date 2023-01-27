@@ -12,7 +12,10 @@ function App() {
   const [taskDragged, setTaskDragged] = useState<number | null>(null);
   const [dragginOverTask, setDraggingOverTask] = useState<number | null>(null);
   const [draggingOverList, setDraggingOverList] = useState<number | null>(null);
-  const [draggingFrom, setDraggingFrom] = useState<number | null>(null);
+  const [dragginFromList, setDragginFromList] = useState<number | null>(null);
+  const [draggingFromPosition, setDraggingFromPosition] = useState<
+    number | null
+  >(null);
   const context = useContext(globalState);
 
   const taskLists = context.data.task_lists.filter(
@@ -33,7 +36,12 @@ function App() {
     setIsOpen(false);
   };
 
-  const handleDragEnd = (listId: number, dragEndPosition: number | null) => {
+  const handleDragEnd = (
+    listId: number,
+    dragEndPosition: number | null,
+    draggingFromList: number,
+    draggingFromPosition: number | null
+  ) => {
     console.log(
       `dragging ${taskDragged} into list ${draggingOverList}, position: ${dragEndPosition}`
     );
@@ -42,6 +50,8 @@ function App() {
       listId: draggingOverList,
       taskId: taskDragged,
       dragEndPosition,
+      draggingFromList,
+      draggingFromPosition,
     });
   };
 
@@ -53,7 +63,14 @@ function App() {
             <div
               key={item.id}
               onDragOver={(e: any) => setDraggingOverList(item.id)}
-              onDragEnd={(e: any) => handleDragEnd(item.id, dragginOverTask)}
+              onDragEnd={(e: any) =>
+                handleDragEnd(
+                  item.id,
+                  dragginOverTask,
+                  dragginFromList!,
+                  draggingFromPosition
+                )
+              }
             >
               <TaskList
                 key={item.id}
@@ -65,7 +82,8 @@ function App() {
                 )}
                 setTaskDragged={setTaskDragged}
                 setDraggingOverTask={setDraggingOverTask}
-                setDraggingFrom={setDraggingFrom}
+                setDraggingFromList={setDragginFromList}
+                setDraggingFromPosition={setDraggingFromPosition}
               />
             </div>
           );
@@ -89,9 +107,10 @@ function App() {
           )}
         </div>
         <TaskList
+          setDraggingFromPosition={setDraggingFromPosition}
           setDraggingOverTask={setDraggingOverTask}
           setTaskDragged={setTaskDragged}
-          setDraggingFrom={setDraggingFrom}
+          setDraggingFromList={setDragginFromList}
           name={"Completed Tasks"}
           tasks={completedTasks}
         />

@@ -121,17 +121,56 @@ const reducer = (
       // );
       // console.log("nextTaskToBubble", nextTaskToBubble?.name);
 
+      //reduce positions of list that is dragged from
+
+      // draggingFromList,
+      // draggingFromPosition,
+
+      const tasksToReducePositions = tasks.filter(
+        (t) => t.task_list_id === action.payload.draggingFromList
+      );
+
+      console.log("tasksToReducePositions", tasksToReducePositions);
+
+      // const list = currentState.data.task_lists.find(
+      //   (l) => l.id === action.payload.draggingFromList
+      // );
+
+      const taskMoved = tasksToReducePositions.find(
+        (t) => t.position === action.payload.draggingFromPosition
+      );
+
+      console.log(taskMoved, "taskMoved");
+
+      const reducePositions = (taskMoved: Task) => {
+        console.log(taskMoved, "taskMoved");
+        const nextTaskToBubble = tasksToReducePositions.find(
+          (t) => t.position === taskMoved.position + 1
+        );
+        if (nextTaskToBubble) {
+          nextTaskToBubble.position = taskMoved.position - 1;
+          console.log("has more");
+
+          bubbleTask(nextTaskToBubble);
+        } else {
+          // nextTaskToBubble.position = taskMoved.position - 1;
+          return;
+        }
+      };
+
+      // if (taskMoved) reducePositions(taskMoved);
+
       const bubbleTask = (taskToMove: Task): void => {
         const nextTaskToBubble = tasks.find(
           (t) => t.position === taskToMove.position + 1
         );
-
         if (nextTaskToBubble) {
+          taskToMove.position = taskToMove.position + 1;
           console.log("has more");
-          taskToMove.position = nextTaskToBubble.position;
 
           bubbleTask(nextTaskToBubble);
         } else {
+          taskToMove.position = taskToMove.position + 1;
           return;
         }
       };
