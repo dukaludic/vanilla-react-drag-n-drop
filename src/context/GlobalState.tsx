@@ -118,9 +118,13 @@ const handleCreateList = (data: Data, payload: Payload): { data: Data } => {
     is_completed: false,
     is_trashed: false,
   };
-  data.task_lists.push(taskListToCreate);
 
-  return { data };
+  return {
+    data: {
+      ...data,
+      task_lists: [...data.task_lists, taskListToCreate],
+    },
+  };
 };
 
 const handleCreateTask = (data: Data, payload: Payload): { data: Data } => {
@@ -145,19 +149,20 @@ const handleCreateTask = (data: Data, payload: Payload): { data: Data } => {
     is_important: false,
   };
 
-  data.tasks.push(task);
-
   taskList.open_tasks++;
 
-  return { data };
+  return {
+    data: {
+      ...data,
+      tasks: [...data.tasks, task],
+    },
+  };
 };
 
 const handleDrag = (data: Data, payload: DragPayload): { data: Data } => {
   const tasks = data.tasks;
 
   const { taskId, fromList, fromPosition, toList, toPosition } = payload;
-
-  // const taskDragged = data.tasks.find((t) => t.id === taskId);
 
   let index = data.tasks.findIndex((item) => item.id === taskId);
   let taskDragged = tasks[index];

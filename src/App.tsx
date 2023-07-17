@@ -32,8 +32,6 @@ function App() {
     fromList: number | null,
     fromPosition: number | null
   ) => {
-    console.log('TO LIST', toList);
-
     if (!taskDragged || !fromList || !fromPosition || !toList || !toPosition) {
       return;
     }
@@ -58,7 +56,6 @@ function App() {
               key={item.id}
               onDragOver={(e: React.DragEvent) => {
                 setToList(item.id);
-                console.log(`${taskDragged} is dragging over ${item.id}`);
               }}
               onDragEnd={(e: React.DragEvent) => handleDragEnd(toList, toPosition, fromList!, fromPosition)}
             >
