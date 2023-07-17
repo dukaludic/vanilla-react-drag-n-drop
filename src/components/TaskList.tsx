@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
-import { dots } from '../assets';
 import { Task as TaskType } from '../types';
 import Task from './Task';
 import './taskList.css';
@@ -69,7 +68,7 @@ const TaskList = ({ id, name, tasks, setTaskDragged, setToPosition, setFromList,
         <div>
           {name !== 'Completed Tasks' && (
             <div ref={dropdownRef} onClick={() => setDropdownShown(!dropdownShown)} className="dots-container">
-              <img src={dots} />
+              {/* <img src={dots} /> */}
               {dropdownShown && (
                 <div className="dots-dropdown">
                   <ul>

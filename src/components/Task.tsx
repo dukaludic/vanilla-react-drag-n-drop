@@ -3,7 +3,7 @@ import './task.css';
 import moment from 'moment';
 import { Task as TaskType } from '../types';
 import { globalState } from '../context/GlobalState';
-import { comments, subtasks } from '../assets';
+// import { comments, subtasks } from '../../public/assets';
 
 type Props = {
   task: TaskType;
@@ -39,13 +39,13 @@ function Task({ task }: Props) {
           )}
           {task.open_subtasks > 0 && (
             <div className="subtasks">
-              <img src={subtasks} />
+              {/* <img src={subtasks} /> */}
               <p>{task.open_subtasks}</p>
             </div>
           )}
           {task.comments_count > 0 && (
             <div className="comments">
-              <img src={comments} />
+              {/* <img src={comments} /> */}
               <p>{task.comments_count}</p>
             </div>
           )}
